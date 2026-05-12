@@ -1,0 +1,17 @@
+{
+  "name": "Trivia Pro - Cultura General",
+  "short_name": "Trivia Pro",
+  "description": "Juego de cultura general online y multijugador en español.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b14",
+  "theme_color": "#0b0b14",
+  "lang": "es",
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["games", "education", "entertainment"]
+}
