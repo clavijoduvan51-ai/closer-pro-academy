@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0f" />
+  <meta name="description" content="Trivia Pro: juego de cultura general online y multijugador para móvil y PC." />
+  <title>Trivia Pro – Cultura General Online</title>
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/png" href="./icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <!-- ====== HEADER ====== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">TP</div>
+      <div>
+        <h1>Trivia Pro</h1>
+        <span class="sub">Cultura General Online</span>
+      </div>
+    </div>
+    <div class="player-chip" id="player-chip">
+      <span class="avatar" id="player-avatar">?</span>
+      <span id="player-name-label">Invitado</span>
+      <button class="link" id="btn-edit-name" title="Cambiar nombre">editar</button>
+    </div>
+  </header>
+
+  <main id="app">
+
+    <!-- ====== PANTALLA: INICIO ====== -->
+    <section class="screen active" id="screen-home">
+      <div class="hero">
+        <h2>¡A demostrar lo que sabes!</h2>
+        <p>Pon a prueba tu cultura general en partidas rápidas, juega con amigos en salas privadas o entra a una sala pública con jugadores de todo el mundo.</p>
+      </div>
+
+      <div class="grid-cards">
+        <button class="big-card" data-go="screen-solo">
+          <div class="card-icon">🧠</div>
+          <h3>Un Jugador</h3>
+          <p>Practica y rompe tu propio récord.</p>
+        </button>
+
+        <button class="big-card" data-go="screen-create">
+          <div class="card-icon">👥</div>
+          <h3>Crear Sala</h3>
+          <p>Invita a amigos con un código.</p>
+        </button>
+
+        <button class="big-card" data-go="screen-join">
+          <div class="card-icon">🔑</div>
+          <h3>Unirme a Sala</h3>
+          <p>Ingresa el código de tus amigos.</p>
+        </button>
+
+        <button class="big-card" data-go="screen-public">
+          <div class="card-icon">🌎</div>
+          <h3>Sala Pública</h3>
+          <p>Juega con cualquier persona.</p>
+        </button>
+      </div>
+
+      <div class="row-cards">
+        <button class="mini-card" data-go="screen-stats">📊 Mis estadísticas</button>
+        <button class="mini-card" data-go="screen-settings">⚙️ Ajustes</button>
+        <button class="mini-card" data-go="screen-howto">❓ Cómo jugar</button>
+      </div>
+    </section>
+
+    <!-- ====== PANTALLA: SOLO ====== -->
+    <section class="screen" id="screen-solo">
+      <button class="back" data-back>‹ Volver</button>
+      <h2>Modo un jugador</h2>
+
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="solo-category"></select>
+      </div>
+
+      <div class="form-group">
+        <label>Dificultad</label>
+        <select id="solo-difficulty">
+          <option value="facil">Fácil</option>
+          <option value="medio" selected>Medio</option>
+          <option value="dificil">Difícil</option>
+          <option value="mixto">Mixta</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Número de preguntas</label>
+        <select id="solo-count">
+          <option>5</option>
+          <option selected>10</option>
+          <option>15</option>
+          <option>20</option>
+        </select>
+      </div>
+
+      <button class="btn-main" id="btn-start-solo">Empezar partida</button>
+    </section>
+
+    <!-- ====== PANTALLA: CREAR SALA ====== -->
+    <section class="screen" id="screen-create">
+      <button class="back" data-back>‹ Volver</button>
+      <h2>Crear sala privada</h2>
+      <p class="muted">Comparte el código con tus amigos para que entren.</p>
+
+      <div class="form-group">
+        <label>Categoría</label>
+        <select id="room-category"></select>
+      </div>
+      <div class="form-group">
+        <label>Dificultad</label>
+        <select id="room-difficulty">
+          <option value="facil">Fácil</option>
+          <option value="medio" selected>Medio</option>
+          <option value="dificil">Difícil</option>
+          <option value="mixto">Mixta</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preguntas</label>
+        <select id="room-count">
+          <option>5</option>
+          <option selected>10</option>
+          <option>15</option>
+          <option>20</option>
+        </select>
+      </div>
+      <button class="btn-main" id="btn-create-room">Crear sala</button>
+    </section>
+
+    <!-- ====== PANTALLA: UNIRSE ====== -->
+    <section class="screen" id="screen-join">
+      <button class="back" data-back>‹ Volver</button>
+      <h2>Unirme a sala</h2>
+      <p class="muted">Pide a tu amigo el código de 6 caracteres.</p>
+
+      <div class="form-group">
+        <label>Código de sala</label>
+        <input id="join-code" type="text" maxlength="6" placeholder="Ej. AB12CD" autocapitalize="characters" />
+      </div>
+      <button class="btn-main" id="btn-join-room">Entrar</button>
+    </section>
+
+    <!-- ====== PANTALLA: PÚBLICO ====== -->
+    <section class="screen" id="screen-public">
+      <button class="back" data-back>‹ Volver</button>
+      <h2>Sala pública</h2>
+      <p class="muted">Te emparejaremos con otros jugadores online.</p>
+      <button class="btn-main" id="btn-public-quick">Búsqueda rápida</button>
+      <div class="muted small" id="public-status"></div>
+    </section>
+
+    <!-- ====== PANTALLA: LOBBY ====== -->
+    <section class="screen" id="screen-lobby">
+      <h2>Sala</h2>
+      <div class="room-code">
+        Código: <span id="lobby-code">------</span>
+        <button class="link" id="btn-copy-code">copiar</button>
+      </div>
+      <div class="muted" id="lobby-role"></div>
+
+      <h3>Jugadores</h3>
+      <ul class="player-list" id="player-list"></ul>
+
+      <div id="host-controls" class="hidden">
+        <button class="btn-main" id="btn-start-game">Iniciar partida</button>
+      </div>
+      <div id="guest-info" class="muted hidden">Esperando que el anfitrión inicie la partida…</div>
+
+      <button class="link danger" id="btn-leave-room">Salir de la sala</button>
+    </section>
+
+    <!-- ====== PANTALLA: PARTIDA ====== -->
+    <section class="screen" id="screen-game">
+      <div class="game-bar">
+        <div>Pregunta <span id="q-index">1</span>/<span id="q-total">10</span></div>
+        <div class="timer" id="timer">15</div>
+        <div>🏆 <span id="my-score">0</span></div>
+      </div>
+
+      <div class="category-pill" id="q-category">Categoría</div>
+      <h2 class="question" id="q-text">Pregunta…</h2>
+
+      <div class="options" id="options"></div>
+
+      <div class="muted small" id="q-status"></div>
+    </section>
+
+    <!-- ====== PANTALLA: RESULTADOS ====== -->
+    <section class="screen" id="screen-results">
+      <h2>🏁 Resultados</h2>
+      <ol class="ranking" id="ranking"></ol>
+      <div class="row">
+        <button class="btn-main" id="btn-replay">Jugar de nuevo</button>
+        <button class="btn-secondary" id="btn-home">Inicio</button>
+      </div>
+    </section>
+
+    <!-- ====== PANTALLA: ESTADÍSTICAS ====== -->
+    <section class="screen" id="screen-stats">
+      <button class="back" data-back>‹ Volver</button>
+      <h2>📊 Mis estadísticas</h2>
+      <div class="stat-grid">
+        <div class="stat"><div class="num" id="stat-games">0</div><div>Partidas</div></div>
+        <div class="stat"><div class="num" id="stat-correct">0</div><div>Aciertos</div></div>
+        <div class="stat"><div class="num" id="stat-best">0</div><div>Mejor puntaje</div></div>
+        <div class="stat"><div class="num" id="stat-streak">0</div><div>Mejor racha</div></div>
+      </div>
+      <button class="link danger" id="btn-reset-stats">Borrar estadísticas</button>
+    </section>
+
+    <!-- ====== PANTALLA: AJUSTES ====== -->
+    <section class="screen" id="screen-settings">
+      <button class="back" data-back>‹ Volver</button>
+      <h2>⚙️ Ajustes</h2>
+      <div class="form-group">
+        <label>Tu nombre</label>
+        <input id="set-name" type="text" maxlength="18" />
+      </div>
+      <div class="form-group">
+        <label>Sonidos</label>
+        <select id="set-sound">
+          <option value="on" selected>Activados</option>
+          <option value="off">Desactivados</option>
+        </select>
+      </div>
+      <button class="btn-main" id="btn-save-settings">Guardar</button>
+    </section>
+
+    <!-- ====== PANTALLA: CÓMO JUGAR ====== -->
+    <section class="screen" id="screen-howto">
+      <button class="back" data-back>‹ Volver</button>
+      <h2>❓ Cómo jugar</h2>
+      <ul class="howto">
+        <li>Responde la mayor cantidad de preguntas correctas antes de que se acabe el tiempo.</li>
+        <li>Cuanto más rápido respondas, más puntos sumas.</li>
+        <li>En multijugador, todos ven las mismas preguntas y compiten por el primer lugar.</li>
+        <li>Crea una sala privada y comparte el código con tus amigos, o entra a una sala pública.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ====== TOAST ====== -->
+  <div id="toast" class="toast"></div>
+
+  <!-- PeerJS para multijugador WebRTC -->
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="./js/questions.js"></script>
+  <script src="./js/multiplayer.js"></script>
+  <script src="./js/app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(()=>{});
+      });
+    }
+  </script>
+</body>
+</html>
