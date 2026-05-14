@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TriviaWorld — El mundo del conocimiento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-0: #0a0613;
+      --bg-1: #110826;
+      --bg-2: #1a0f3d;
+      --primary: #8b5cf6;
+      --primary-2: #a855f7;
+      --primary-3: #c084fc;
+      --accent: #f59e0b;
+      --accent-2: #fbbf24;
+      --pink: #ec4899;
+      --cyan: #22d3ee;
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --card: rgba(255, 255, 255, 0.04);
+      --card-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      font-family: 'Plus Jakarta Sans', -apple-system, system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(139, 92, 246, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.18), transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(34, 211, 238, 0.12), transparent 50%),
+        var(--bg-0);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px 16px 60px;
+      gap: 24px;
+    }
+
+    /* ============ DESKTOP HEADER ============ */
+    .desktop-header {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 6, 19, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+    }
+
+    .brand-gradient {
+      background: linear-gradient(90deg, var(--primary-3), var(--pink), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .desktop-nav {
+      display: flex;
+      gap: 8px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .desktop-nav a {
+      padding: 8px 14px;
+      border-radius: 10px;
+      color: inherit;
+      text-decoration: none;
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .desktop-nav a:hover { background: var(--card-hover); color: var(--text); }
+
+    .badge-beta {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primary), var(--pink));
+      color: white;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============ HERO LAYOUT ============ */
+    .hero {
+      width: 100%;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      padding: 32px 24px;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; text-align: center; gap: 32px; }
+      .hero-text { order: 1; }
+      .hero-phone { order: 2; justify-self: center; }
+      .desktop-nav { display: none; }
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 28px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    @media (max-width: 900px) { .hero-stats { justify-content: center; } }
+
+    .stat .num {
+      font-size: 1.6rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary-3), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .stat .lbl { color: var(--text-muted); font-size: 0.85rem; }
+
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    @media (max-width: 900px) { .cta-row { justify-content: center; } }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      border: none;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.98rem;
+      cursor: pointer;
+      transition: 0.2s transform, 0.2s box-shadow;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      color: white;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(139, 92, 246, 0.55); }
+
+    .btn-ghost {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--card-hover); }
+
+    /* ============ PHONE MOCKUP ============ */
+    .hero-phone { display: flex; justify-content: center; }
+
+    .phone {
+      width: 380px;
+      max-width: 100%;
+      height: 780px;
+      background: var(--bg-0);
+      border-radius: 48px;
+      padding: 14px;
+      position: relative;
+      box-shadow:
+        0 0 0 2px rgba(255,255,255,0.06),
+        0 40px 80px rgba(139, 92, 246, 0.25),
+        0 80px 160px rgba(0,0,0,0.6);
+    }
+
+    .phone::before {
+      content: '';
+      position: absolute;
+      top: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 26px;
+      background: #000;
+      border-radius: 999px;
+      z-index: 10;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 36px;
+      background: linear-gradient(180deg, var(--bg-1), var(--bg-0));
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-bar {
+      padding: 14px 28px 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+      z-index: 5;
+      position: relative;
+    }
+
+    .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+    .signal { width: 16px; height: 10px; background: var(--text); clip-path: polygon(0 100%, 25% 100%, 25% 70%, 50% 70%, 50% 40%, 75% 40%, 75% 10%, 100% 10%, 100% 100%); }
+    .battery { width: 22px; height: 11px; border: 1.2px solid var(--text); border-radius: 3px; position: relative; padding: 1px; }
+    .battery::after { content: ''; position: absolute; right: -3px; top: 3px; width: 1.5px; height: 5px; background: var(--text); border-radius: 0 1px 1px 0; }
+    .battery-fill { height: 100%; width: 80%; background: var(--text); border-radius: 1px; }
+
+    .screen-stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      padding: 8px 22px 90px;
+      overflow-y: auto;
+      scrollbar-width: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .screen::-webkit-scrollbar { display: none; }
+    .screen.active { opacity: 1; pointer-events: auto; }
+
+    /* ============ HOME SCREEN ============ */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0 18px;
+    }
+
+    .avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      border: 2px solid rgba(255,255,255,0.15);
+      cursor: pointer;
+    }
+
+    .top-bar-info { flex: 1; padding: 0 12px; }
+    .top-bar-info .hi { font-size: 0.72rem; color: var(--text-muted); }
+    .top-bar-info .name { font-weight: 700; font-size: 0.92rem; }
+
+    .currency-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .gem { width: 14px; height: 14px; background: linear-gradient(135deg, var(--cyan), var(--primary-3)); clip-path: polygon(50% 0, 100% 35%, 80% 100%, 20% 100%, 0 35%); }
+
+    .daily-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(236, 72, 153, 0.12));
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .daily-card::after {
+      content: '';
+      position: absolute;
+      right: -20px; top: -20px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.35), transparent 70%);
+    }
+    .daily-card .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent-2); letter-spacing: 0.06em; text-transform: uppercase; }
+    .daily-card h3 { font-size: 1.1rem; margin: 6px 0 4px; }
+    .daily-card p { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 12px; }
+    .daily-btn {
+      background: linear-gradient(90deg, var(--accent), var(--pink));
+      color: white; border: none; padding: 8px 16px; border-radius: 10px;
+      font-weight: 700; font-size: 0.82rem; cursor: pointer;
+      font-family: inherit;
+    }
+
+    .section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 18px 0 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .section-title a { color: var(--primary-3); text-decoration: none; font-size: 0.72rem; cursor: pointer; }
+
+    .modes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .mode-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .mode-card:hover { background: var(--card-hover); transform: translateY(-2px); }
+    .mode-card.featured {
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      border-color: transparent;
+      grid-column: span 2;
+    }
+    .mode-card.featured::after {
+      content: '';
+      position: absolute;
+      right: -20px; bottom: -20px;
+      width: 120px; height: 120px;
+      background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+    }
+    .mode-icon { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+    .mode-card h4 { font-size: 0.92rem; margin-bottom: 4px; }
+    .mode-card p { font-size: 0.74rem; color: var(--text-muted); line-height: 1.4; }
+    .mode-card.featured p { color: rgba(255,255,255,0.85); }
+
+    .live-pulse {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.7rem; font-weight: 700;
+    }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); } 50% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); } }
+
+    /* Activity */
+    .activity-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .activity-card .av {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--primary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .activity-card .txt { flex: 1; }
+    .activity-card .name { font-size: 0.82rem; font-weight: 600; }
+    .activity-card .meta { font-size: 0.7rem; color: var(--text-muted); }
+    .activity-card .act-btn {
+      background: var(--primary);
+      color: white; border: none; border-radius: 10px;
+      padding: 6px 12px; font-size: 0.74rem; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+    }
+
+    /* ============ BOTTOM NAV ============ */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      backdrop-filter: blur(20px);
+      background: rgba(10, 6, 19, 0.85);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 6px 22px;
+      z-index: 20;
+    }
+
+    .nav-btn {
+      flex: 1;
+      background: none; border: none;
+      color: var(--text-muted);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 3px;
+      padding: 6px 4px;
+      font-family: inherit;
+      font-size: 0.62rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .nav-btn .nav-ic {
+      font-size: 1.15rem;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+    }
+    .nav-btn.active { color: var(--primary-3); }
+    .nav-btn.active .nav-ic { background: rgba(139, 92, 246, 0.15); }
+    .nav-btn.play .nav-ic {
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      color: white;
+      width: 44px; height: 44px;
+      font-size: 1.3rem;
+      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.5);
+      margin-top: -16px;
+    }
+
+    /* ============ PLAY SCREEN ============ */
+    .play-banner {
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      border-radius: 22px;
+      padding: 18px;
+      margin: 14px 0;
+      color: white;
+    }
+    .play-banner h3 { font-size: 1.05rem; margin-bottom: 4px; }
+    .play-banner p { font-size: 0.78rem; opacity: 0.9; }
+
+    .mode-list { display: flex; flex-direction: column; gap: 10px; }
+    .mode-list-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .mode-list-item:hover { background: var(--card-hover); }
+    .mode-list-item .mli-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .mli-icon.v1 { background: rgba(139, 92, 246, 0.18); }
+    .mli-icon.v2 { background: rgba(236, 72, 153, 0.18); }
+    .mli-icon.v3 { background: rgba(34, 211, 238, 0.18); }
+    .mli-icon.v4 { background: rgba(245, 158, 11, 0.18); }
+    .mli-icon.v5 { background: rgba(16, 185, 129, 0.18); }
+    .mode-list-item .mli-text { flex: 1; }
+    .mode-list-item h4 { font-size: 0.92rem; margin-bottom: 2px; }
+    .mode-list-item p { font-size: 0.74rem; color: var(--text-muted); }
+    .mli-chev { color: var(--text-muted); }
+
+    /* ============ CATEGORIES ============ */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .cat-card {
+      aspect-ratio: 1;
+      border-radius: 16px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .cat-card:hover { transform: translateY(-2px); }
+    .cat-card .cat-ic { font-size: 1.6rem; }
+    .cat-card .cat-name { font-size: 0.72rem; font-weight: 700; }
+
+    /* ============ MATCHMAKING ============ */
+    .matchmaking {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      gap: 24px;
+      padding: 30px;
+    }
+    .vs-display {
+      display: flex; align-items: center; gap: 20px;
+      width: 100%; justify-content: space-between;
+    }
+    .vs-player {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .vs-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; font-weight: 800;
+      border: 3px solid rgba(255,255,255,0.15);
+    }
+    .vs-avatar.searching {
+      background: rgba(255,255,255,0.05);
+      border-style: dashed;
+      position: relative;
+      overflow: hidden;
+    }
+    .vs-avatar.searching::after {
+      content: '?';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .vs-name { font-size: 0.82rem; font-weight: 700; }
+    .vs-rank { font-size: 0.7rem; color: var(--text-muted); }
+    .vs-text {
+      font-size: 2rem; font-weight: 900;
+      background: linear-gradient(90deg, var(--primary-3), var(--pink));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .searching-text { font-size: 0.85rem; color: var(--text-muted); }
+    .loader-ring {
+      width: 60px; height: 60px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: var(--primary-3);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ============ GAMEPLAY ============ */
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      margin-bottom: 14px;
+    }
+    .game-score {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .game-score .av-sm {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.78rem; font-weight: 800;
+    }
+    .game-score .av-sm.opp { background: linear-gradient(135deg, var(--cyan), var(--primary)); }
+    .score-num { font-size: 1.2rem; font-weight: 800; }
+    .vs-mini { color: var(--text-muted); font-size: 0.8rem; }
+
+    .timer-ring-wrap {
+      position: relative;
+      width: 56px; height: 56px;
+    }
+    .timer-svg { transform: rotate(-90deg); }
+    .timer-bg { fill: none; stroke: rgba(255,255,255,0.08); stroke-width: 4; }
+    .timer-fg {
+      fill: none;
+      stroke: var(--primary-3);
+      stroke-width: 4;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s linear, stroke 0.3s;
+    }
+    .timer-num {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.1rem;
+    }
+
+    .progress-dots {
+      display: flex; gap: 5px;
+      margin-bottom: 14px;
+      justify-content: center;
+    }
+    .progress-dot {
+      width: 22px; height: 4px; border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      transition: 0.3s;
+    }
+    .progress-dot.done { background: var(--green); }
+    .progress-dot.wrong { background: var(--red); }
+    .progress-dot.current { background: var(--primary-3); }
+
+    .cat-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px 18px;
+      margin-bottom: 16px;
+      min-height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .question-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .answers { display: flex; flex-direction: column; gap: 10px; }
+    .answer-btn {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: left;
+      transition: 0.2s;
+    }
+    .answer-btn:hover:not(:disabled) { background: var(--card-hover); border-color: var(--primary-3); }
+    .answer-btn:disabled { cursor: default; }
+    .answer-letter {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800;
+      font-size: 0.82rem;
+    }
+    .answer-btn.correct {
+      background: rgba(16, 185, 129, 0.18);
+      border-color: var(--green);
+    }
+    .answer-btn.correct .answer-letter { background: var(--green); color: white; }
+    .answer-btn.wrong {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--red);
+    }
+    .answer-btn.wrong .answer-letter { background: var(--red); color: white; }
+
+    .lifelines {
+      display: flex; justify-content: center; gap: 12px;
+      margin-top: 14px;
+    }
+    .lifeline {
+      width: 44px; height: 44px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .lifeline:hover { background: var(--card-hover); border-color: var(--primary-3); }
+    .lifeline.used { opacity: 0.3; cursor: not-allowed; }
+
+    /* ============ RESULT ============ */
+    .result-screen {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      height: 100%; padding: 24px;
+      text-align: center; gap: 20px;
+    }
+    .trophy {
+      font-size: 4.5rem;
+      animation: bounce 0.8s ease;
+    }
+    @keyframes bounce {
+      0% { transform: scale(0); }
+      60% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .result-title {
+      font-size: 2rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--accent-2), var(--pink));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .result-sub { color: var(--text-muted); font-size: 0.92rem; }
+    .reward-row { display: flex; gap: 14px; }
+    .reward-pill {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 10px 14px; border-radius: 14px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+      min-width: 80px;
+    }
+    .reward-pill .v { font-size: 1.1rem; font-weight: 800; color: var(--accent-2); }
+    .reward-pill .k { font-size: 0.68rem; color: var(--text-muted); }
+
+    /* ============ PROFILE ============ */
+    .profile-header {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 18px 0 12px;
+      gap: 10px;
+    }
+    .profile-av {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; font-weight: 800;
+      border: 3px solid rgba(255,255,255,0.15);
+      position: relative;
+    }
+    .profile-level {
+      position: absolute; bottom: -4px;
+      background: var(--accent);
+      color: var(--bg-0); font-weight: 800;
+      font-size: 0.74rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 2px solid var(--bg-1);
+    }
+    .profile-name { font-size: 1.15rem; font-weight: 700; }
+    .profile-league {
+      font-size: 0.72rem;
+      color: var(--accent-2);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .xp-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 4px 0;
+    }
+    .xp-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--pink));
+      width: 64%;
+    }
+    .xp-text { font-size: 0.7rem; color: var(--text-muted); }
+
+    .stats-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .stat-card .v { font-size: 1.15rem; font-weight: 800; }
+    .stat-card .k { font-size: 0.68rem; color: var(--text-muted); }
+
+    .achievements-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .ach {
+      aspect-ratio: 1;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .ach.locked { opacity: 0.25; filter: grayscale(1); }
+    .ach:hover:not(.locked) { transform: scale(1.08); }
+
+    /* ============ LEADERBOARD ============ */
+    .tabs {
+      display: flex;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 4px;
+      margin: 14px 0;
+    }
+    .tab {
+      flex: 1; padding: 8px 12px;
+      background: none; border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.8rem; font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      color: white;
+    }
+    .lb-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px; margin-bottom: 8px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .lb-item.me { background: rgba(139, 92, 246, 0.12); border-color: var(--primary-3); }
+    .lb-rank {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.82rem;
+    }
+    .lb-rank.gold { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: var(--bg-0); }
+    .lb-rank.silver { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: var(--bg-0); }
+    .lb-rank.bronze { background: linear-gradient(135deg, #f59e0b, #b45309); color: var(--bg-0); }
+    .lb-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.82rem;
+    }
+    .lb-info { flex: 1; }
+    .lb-name { font-size: 0.88rem; font-weight: 700; }
+    .lb-meta { font-size: 0.7rem; color: var(--text-muted); }
+    .lb-score { font-weight: 800; font-size: 0.95rem; color: var(--accent-2); }
+
+    /* ============ ROOMS ============ */
+    .room-actions {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; margin: 14px 0;
+    }
+    .room-action {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.15));
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .room-action:hover { transform: translateY(-2px); }
+    .room-action .ra-ic { font-size: 1.6rem; margin-bottom: 6px; }
+    .room-action h4 { font-size: 0.86rem; }
+
+    .room-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 8px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .room-host {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--cyan), var(--primary));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.84rem; font-weight: 800;
+    }
+    .room-info { flex: 1; }
+    .room-name { font-size: 0.86rem; font-weight: 700; }
+    .room-meta { font-size: 0.7rem; color: var(--text-muted); display: flex; gap: 8px; }
+    .room-join {
+      background: var(--primary); color: white;
+      border: none; padding: 6px 12px; border-radius: 10px;
+      font-weight: 700; font-size: 0.74rem; cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* ============ BACK BUTTON ============ */
+    .back-btn {
+      background: var(--card); border: 1px solid var(--border);
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text);
+      font-size: 1rem; font-family: inherit;
+    }
+
+    .screen-title { font-size: 1.1rem; font-weight: 800; flex: 1; text-align: center; margin-right: 36px; }
+
+    /* ============ FEATURES SECTION (desktop) ============ */
+    .features-section {
+      width: 100%;
+      max-width: 1200px;
+      padding: 48px 24px;
+    }
+
+    .section-h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .section-sub {
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 40px;
+      line-height: 1.6;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 26px;
+      transition: 0.3s;
+    }
+    .feature-card:hover { background: var(--card-hover); transform: translateY(-4px); border-color: rgba(139, 92, 246, 0.4); }
+
+    .feature-icon {
+      width: 50px; height: 50px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--pink));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+    .feature-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.55; }
+
+    /* ============ ROADMAP ============ */
+    .roadmap {
+      width: 100%;
+      max-width: 1200px;
+      padding: 48px 24px;
+    }
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .roadmap-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .roadmap-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .roadmap-card.r1::before { background: linear-gradient(90deg, var(--primary), var(--cyan)); }
+    .roadmap-card.r2::before { background: linear-gradient(90deg, var(--pink), var(--primary)); }
+    .roadmap-card.r3::before { background: linear-gradient(90deg, var(--accent), var(--pink)); }
+
+    .roadmap-card h3 { font-size: 1.15rem; margin: 6px 0 4px; }
+    .roadmap-card .timeline { font-size: 0.74rem; font-weight: 700; color: var(--primary-3); text-transform: uppercase; letter-spacing: 0.06em; }
+    .roadmap-card ul { list-style: none; margin-top: 14px; }
+    .roadmap-card li { padding: 6px 0; font-size: 0.86rem; color: var(--text-muted); display: flex; gap: 8px; }
+    .roadmap-card li::before { content: '✓'; color: var(--green); font-weight: 800; }
+
+    /* ============ FOOTER ============ */
+    footer {
+      width: 100%; max-width: 1200px;
+      text-align: center; padding: 32px 24px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--border);
+      margin-top: 16px;
+    }
+    footer .ft-brand {
+      font-weight: 800; font-size: 1rem;
+      background: linear-gradient(90deg, var(--primary-3), var(--pink));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      margin-bottom: 6px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 0.88rem; font-weight: 600;
+      transition: transform 0.3s;
+      z-index: 9999;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <header class="desktop-header">
+    <div class="brand">
+      <div class="brand-logo">T</div>
+      <span><span class="brand-gradient">Trivia</span>World</span>
+      <span class="badge-beta">BETA</span>
+    </div>
+    <nav class="desktop-nav">
+      <a>Características</a>
+      <a>Roadmap</a>
+      <a>Monetización</a>
+      <a>Contacto</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>El mundo del <span class="brand-gradient">conocimiento</span> en tu bolsillo.</h1>
+      <p>Compite en tiempo real contra jugadores de todo el mundo, reta a tus amigos y crea salas privadas. Aprende historia, ciencia, deportes y mucho más mientras te diviertes.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="goTo('home')">▶ Probar la app</button>
+        <button class="btn btn-ghost" onclick="document.querySelector('.features-section').scrollIntoView({behavior:'smooth'})">Ver características</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">10 +</div><div class="lbl">Categorías</div></div>
+        <div class="stat"><div class="num">5K +</div><div class="lbl">Preguntas curadas</div></div>
+        <div class="stat"><div class="num">8</div><div class="lbl">Modos de juego</div></div>
+        <div class="stat"><div class="num">150 +</div><div class="lbl">Logros</div></div>
+      </div>
+    </div>
+
+    <div class="hero-phone">
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="icons">
+              <span class="signal"></span>
+              <span style="font-size:0.8rem;font-weight:700">5G</span>
+              <span class="battery"><span class="battery-fill"></span></span>
+            </div>
+          </div>
+
+          <div class="screen-stage" id="stage">
+            <!-- ===== HOME ===== -->
+            <section class="screen active" id="screen-home">
+              <div class="top-bar">
+                <div class="avatar" onclick="goTo('profile')">D</div>
+                <div class="top-bar-info">
+                  <div class="hi">Buenas tardes 👋</div>
+                  <div class="name">Duvan</div>
+                </div>
+                <div class="currency-chip"><span class="gem"></span> 2.450</div>
+              </div>
+
+              <div class="daily-card">
+                <div class="tag">🔥 Reto del día</div>
+                <h3>Especial: Mundial de Fútbol</h3>
+                <p>10 preguntas. Triple XP por completarlo.</p>
+                <button class="daily-btn" onclick="startGame('Deportes')">Jugar ahora</button>
+              </div>
+
+              <div class="section-title">
+                <span>Modos de juego</span>
+                <a onclick="goTo('play')">Ver todos →</a>
+              </div>
+              <div class="modes-grid">
+                <div class="mode-card featured" onclick="goTo('matchmaking')">
+                  <span class="mode-icon">⚔️</span>
+                  <h4>Duelo 1 vs 1</h4>
+                  <p>Encuentra rival y juega en tiempo real</p>
+                  <div style="margin-top:8px"><span class="live-pulse"><span class="live-dot"></span>12.4K en línea</span></div>
+                </div>
+                <div class="mode-card" onclick="goTo('rooms')">
+                  <span class="mode-icon">🏠</span>
+                  <h4>Salas</h4>
+                  <p>Públicas y privadas</p>
+                </div>
+                <div class="mode-card" onclick="goTo('friends')">
+                  <span class="mode-icon">👥</span>
+                  <h4>Reta amigos</h4>
+                  <p>Envía un duelo directo</p>
+                </div>
+              </div>
+
+              <div class="section-title">
+                <span>Actividad de amigos</span>
+                <a onclick="goTo('friends')">Ver →</a>
+              </div>
+              <div class="activity-card">
+                <div class="av">L</div>
+                <div class="txt">
+                  <div class="name">Laura M.</div>
+                  <div class="meta">Te retó a una partida</div>
+                </div>
+                <button class="act-btn" onclick="startGame('Cultura')">Aceptar</button>
+              </div>
+              <div class="activity-card">
+                <div class="av" style="background:linear-gradient(135deg, var(--accent), var(--pink))">J</div>
+                <div class="txt">
+                  <div class="name">Javier R.</div>
+                  <div class="meta">Subió a liga Diamante 💎</div>
+                </div>
+              </div>
+              <div class="activity-card">
+                <div class="av" style="background:linear-gradient(135deg, var(--green), var(--cyan))">A</div>
+                <div class="txt">
+                  <div class="name">Andrea P.</div>
+                  <div class="meta">Está jugando en sala "Cinéfilos"</div>
+                </div>
+                <button class="act-btn" style="background:var(--green)" onclick="goTo('rooms')">Unirse</button>
+              </div>
+            </section>
+
+            <!-- ===== PLAY ===== -->
+            <section class="screen" id="screen-play">
+              <div class="top-bar">
+                <button class="back-btn" onclick="goTo('home')">‹</button>
+                <div class="screen-title">Jugar</div>
+              </div>
+
+              <div class="play-banner">
+                <h3>Modo Liga: Plata III 🥈</h3>
+                <p>Gana 3 partidas más para ascender a Oro</p>
+              </div>
+
+              <div class="mode-list">
+                <div class="mode-list-item" onclick="goTo('matchmaking')">
+                  <div class="mli-icon v1">⚔️</div>
+                  <div class="mli-text">
+                    <h4>Duelo 1 vs 1</h4>
+                    <p>Partida rápida contra rival aleatorio</p>
+                  </div>
+                  <span class="mli-chev">›</span>
+                </div>
+                <div class="mode-list-item" onclick="goTo('categories')">
+                  <div class="mli-icon v2">🎯</div>
+                  <div class="mli-text">
+                    <h4>Práctica solitaria</h4>
+                    <p>Elige categoría y sube tu nivel</p>
+                  </div>
+                  <span class="mli-chev">›</span>
+                </div>
+                <div class="mode-list-item" onclick="goTo('friends')">
+                  <div class="mli-icon v3">👥</div>
+                  <div class="mli-text">
+                    <h4>Retar amigos</h4>
+                    <p>Envía un duelo directo a tus contactos</p>
+                  </div>
+                  <span class="mli-chev">›</span>
+                </div>
+                <div class="mode-list-item" onclick="goTo('rooms')">
+                  <div class="mli-icon v4">🏠</div>
+                  <div class="mli-text">
+                    <h4>Salas multijugador</h4>
+                    <p>Hasta 12 jugadores · pública o privada</p>
+                  </div>
+                  <span class="mli-chev">›</span>
+                </div>
+                <div class="mode-list-item" onclick="startGame()">
+                  <div class="mli-icon v5">⚡</div>
+                  <div class="mli-text">
+                    <h4>Maratón</h4>
+                    <p>Aciertos seguidos · 3 vidas</p>
+                  </div>
+                  <span class="mli-chev">›</span>
+                </div>
+                <div class="mode-list-item" onclick="showToast('Torneo Semanal: domingos 8PM')">
+                  <div class="mli-icon v1" style="background:rgba(245, 158, 11, 0.18)">🏆</div>
+                  <div class="mli-text">
+                    <h4>Torneos</h4>
+                    <p>Bracket eliminatorio · premios reales</p>
+                  </div>
+                  <span class="mli-chev">›</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- ===== CATEGORIES ===== -->
+            <section class="screen" id="screen-categories">
+              <div class="top-bar">
+                <button class="back-btn" onclick="goTo('play')">‹</button>
+                <div class="screen-title">Elige categoría</div>
+              </div>
+              <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+                Más de 5.000 preguntas curadas por nuestro equipo editorial.
+              </p>
+              <div class="categories-grid" id="catGrid"></div>
+            </section>
+
+            <!-- ===== MATCHMAKING ===== -->
+            <section class="screen" id="screen-matchmaking">
+              <div class="matchmaking">
+                <div class="vs-display">
+                  <div class="vs-player">
+                    <div class="vs-avatar">D</div>
+                    <div class="vs-name">Duvan</div>
+                    <div class="vs-rank">Nivel 24 · Plata III</div>
+                  </div>
+                  <div class="vs-text">VS</div>
+                  <div class="vs-player">
+                    <div class="vs-avatar searching"></div>
+                    <div class="vs-name">Buscando...</div>
+                    <div class="vs-rank">Rival similar</div>
+                  </div>
+                </div>
+                <div class="loader-ring"></div>
+                <div class="searching-text">Emparejando jugador por habilidad</div>
+                <button class="btn btn-ghost" onclick="goTo('play')">Cancelar</button>
+              </div>
+            </section>
+
+            <!-- ===== GAME ===== -->
+            <section class="screen" id="screen-game">
+              <div class="game-header">
+                <div class="game-score">
+                  <div class="av-sm">D</div>
+                  <span class="score-num" id="myScore">0</span>
+                  <span class="vs-mini">vs</span>
+                  <span class="score-num" id="oppScore">0</span>
+                  <div class="av-sm opp">A</div>
+                </div>
+                <div class="timer-ring-wrap">
+                  <svg class="timer-svg" width="56" height="56">
+                    <circle class="timer-bg" cx="28" cy="28" r="24"/>
+                    <circle class="timer-fg" id="timerFg" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+                  </svg>
+                  <div class="timer-num" id="timerNum">15</div>
+                </div>
+              </div>
+
+              <div class="progress-dots" id="progressDots"></div>
+
+              <div class="cat-tag" id="catTag">📚 Historia</div>
+              <div class="question-card">
+                <div class="question-text" id="questionText">Cargando...</div>
+              </div>
+
+              <div class="answers" id="answersBox"></div>
+
+              <div class="lifelines">
+                <div class="lifeline" id="lifeFifty" onclick="useFifty()">⚡</div>
+                <div class="lifeline" id="lifeTime" onclick="useTime()">⏱️</div>
+                <div class="lifeline" id="lifeSkip" onclick="useSkip()">🔄</div>
+                <div class="lifeline" id="lifePublic" onclick="usePublic()">👥</div>
+              </div>
+            </section>
+
+            <!-- ===== RESULT ===== -->
+            <section class="screen" id="screen-result">
+              <div class="result-screen">
+                <div class="trophy" id="resultEmoji">🏆</div>
+                <div>
+                  <div class="result-title" id="resultTitle">¡Victoria!</div>
+                  <div class="result-sub" id="resultSub">Has ganado 7-4 contra Andrea</div>
+                </div>
+                <div class="reward-row">
+                  <div class="reward-pill"><span class="v">+85</span><span class="k">XP</span></div>
+                  <div class="reward-pill"><span class="v">+25</span><span class="k">Monedas</span></div>
+                  <div class="reward-pill"><span class="v">+12</span><span class="k">ELO</span></div>
+                </div>
+                <div class="cta-row" style="flex-direction:column;width:100%">
+                  <button class="btn btn-primary" style="width:100%" onclick="startGame()">Jugar otra</button>
+                  <button class="btn btn-ghost" style="width:100%" onclick="goTo('home')">Volver al inicio</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- ===== PROFILE ===== -->
+            <section class="screen" id="screen-profile">
+              <div class="top-bar">
+                <button class="back-btn" onclick="goTo('home')">‹</button>
+                <div class="screen-title">Mi perfil</div>
+              </div>
+
+              <div class="profile-header">
+                <div class="profile-av">D <div class="profile-level">Nv 24</div></div>
+                <div class="profile-name">Duvan Clavijo</div>
+                <div class="profile-league">🥈 Plata III · 1.840 ELO</div>
+                <div style="width:100%;padding:0 8px">
+                  <div class="xp-bar"><div class="xp-bar-fill"></div></div>
+                  <div class="xp-text" style="display:flex;justify-content:space-between">
+                    <span>3.245 XP</span><span>Próximo: 5.000 XP</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="stats-row">
+                <div class="stat-card"><div class="v">142</div><div class="k">Partidas</div></div>
+                <div class="stat-card"><div class="v">68%</div><div class="k">Aciertos</div></div>
+                <div class="stat-card"><div class="v">7</div><div class="k">Racha 🔥</div></div>
+              </div>
+
+              <div class="section-title">
+                <span>Logros · 24/150</span>
+                <a>Ver todos →</a>
+              </div>
+              <div class="achievements-grid">
+                <div class="ach">🏆</div>
+                <div class="ach">⚡</div>
+                <div class="ach">🎯</div>
+                <div class="ach">🔥</div>
+                <div class="ach">📚</div>
+                <div class="ach">🌍</div>
+                <div class="ach">🎨</div>
+                <div class="ach">⚽</div>
+                <div class="ach locked">🚀</div>
+                <div class="ach locked">💎</div>
+                <div class="ach locked">👑</div>
+                <div class="ach locked">🧠</div>
+              </div>
+            </section>
+
+            <!-- ===== LEADERBOARD ===== -->
+            <section class="screen" id="screen-leaderboard">
+              <div class="top-bar">
+                <button class="back-btn" onclick="goTo('home')">‹</button>
+                <div class="screen-title">Clasificación</div>
+              </div>
+
+              <div class="tabs">
+                <button class="tab active">Global</button>
+                <button class="tab">Amigos</button>
+                <button class="tab">Semanal</button>
+              </div>
+
+              <div id="leaderboardList"></div>
+            </section>
+
+            <!-- ===== FRIENDS ===== -->
+            <section class="screen" id="screen-friends">
+              <div class="top-bar">
+                <button class="back-btn" onclick="goTo('home')">‹</button>
+                <div class="screen-title">Amigos</div>
+              </div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:14px" onclick="showToast('Enlace de invitación copiado')">
+                + Invitar amigos
+              </button>
+              <div id="friendsList"></div>
+            </section>
+
+            <!-- ===== ROOMS ===== -->
+            <section class="screen" id="screen-rooms">
+              <div class="top-bar">
+                <button class="back-btn" onclick="goTo('home')">‹</button>
+                <div class="screen-title">Salas</div>
+              </div>
+
+              <div class="room-actions">
+                <div class="room-action" onclick="showToast('Sala creada: código JX8K2P')">
+                  <div class="ra-ic">🔒</div>
+                  <h4>Crear privada</h4>
+                </div>
+                <div class="room-action" onclick="showToast('Sala pública creada')">
+                  <div class="ra-ic">🌍</div>
+                  <h4>Crear pública</h4>
+                </div>
+              </div>
+
+              <div class="section-title">
+                <span>Salas activas</span>
+                <span class="live-pulse"><span class="live-dot"></span>148 en vivo</span>
+              </div>
+
+              <div id="roomsList"></div>
+            </section>
+
+          </div>
+
+          <nav class="bottom-nav">
+            <button class="nav-btn active" data-screen="home" onclick="goTo('home')">
+              <span class="nav-ic">🏠</span><span>Inicio</span>
+            </button>
+            <button class="nav-btn" data-screen="leaderboard" onclick="goTo('leaderboard')">
+              <span class="nav-ic">🏅</span><span>Ranking</span>
+            </button>
+            <button class="nav-btn play" data-screen="play" onclick="goTo('play')">
+              <span class="nav-ic">▶</span>
+            </button>
+            <button class="nav-btn" data-screen="friends" onclick="goTo('friends')">
+              <span class="nav-ic">👥</span><span>Amigos</span>
+            </button>
+            <button class="nav-btn" data-screen="profile" onclick="goTo('profile')">
+              <span class="nav-ic">👤</span><span>Perfil</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES SECTION ============ -->
+  <section class="features-section">
+    <h2 class="section-h2">Diseñada para <span class="brand-gradient">destacarse</span></h2>
+    <p class="section-sub">Lo que hace a TriviaWorld diferente de cualquier app de trivia del mercado.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚔️</div>
+        <h3>Tiempo real mundial</h3>
+        <p>Duelos 1v1 con matchmaking ELO. Latencia &lt;100ms gracias a WebSockets sobre Redis.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏠</div>
+        <h3>Salas públicas y privadas</h3>
+        <p>Hasta 12 jugadores. Código de 6 dígitos, chat moderado por IA, expulsión por host.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Reto a amigos</h3>
+        <p>Invitación directa por enlace, WhatsApp o usuario. Resultado guardado en el historial.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>5.000 preguntas curadas</h3>
+        <p>Equipo editorial valida cada pregunta. Actualizadas semanalmente. 10 categorías troncales.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Ligas y temporadas</h3>
+        <p>De Bronce a Leyenda. Reset mensual con recompensas exclusivas según tu liga final.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💎</div>
+        <h3>Gamificación profunda</h3>
+        <p>150 logros, 100 niveles, monedas, gemas, cofres, pase de batalla trimestral.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Seguridad primero</h3>
+        <p>Cifrado TLS, anti-trampas servidor-cliente, moderación IA del chat, baneos progresivos.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Contenido localizado</h3>
+        <p>Preguntas culturales por región. Inicia en español, expande a 8 idiomas en año 2.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROADMAP ============ -->
+  <section class="roadmap">
+    <h2 class="section-h2">Hoja de <span class="brand-gradient">ruta</span></h2>
+    <p class="section-sub">Una proyección clara de cómo crece TriviaWorld desde el lanzamiento.</p>
+    <div class="roadmap-grid">
+      <div class="roadmap-card r1">
+        <div class="timeline">Corto plazo · 0–6 meses</div>
+        <h3>MVP y lanzamiento</h3>
+        <ul>
+          <li>3 modos (solo, 1v1, reto amigos)</li>
+          <li>5.000 preguntas en español</li>
+          <li>LatAm + España</li>
+          <li>Meta: 50K descargas · 10K DAU</li>
+        </ul>
+      </div>
+      <div class="roadmap-card r2">
+        <div class="timeline">Mediano plazo · 6–18 meses</div>
+        <h3>Escala y comunidad</h3>
+        <ul>
+          <li>Salas públicas y torneos</li>
+          <li>Inglés y portugués</li>
+          <li>Clanes y pase de batalla</li>
+          <li>Meta: 500K descargas · 80K DAU</li>
+        </ul>
+      </div>
+      <div class="roadmap-card r3">
+        <div class="timeline">Largo plazo · 18–36 meses</div>
+        <h3>Expansión global</h3>
+        <ul>
+          <li>8 idiomas + Smart TV</li>
+          <li>Twitch / YouTube streaming</li>
+          <li>Liga profesional con premios</li>
+          <li>Meta: 5M descargas · 500K DAU</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ft-brand">TriviaWorld</div>
+    <div>Prototipo interactivo · Diseño UX/UI completo · Listo para desarrollo en Flutter</div>
+    <div style="margin-top:10px">© 2026 · Todos los derechos reservados</div>
+  </footer>
+
+  <div class="toast" id="toast">Hola</div>
+
+  <script>
+    /* ============ NAVIGATION ============ */
+    function goTo(screen) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById('screen-' + screen);
+      if (target) target.classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.screen === screen);
+      });
+      // scroll screen to top
+      if (target) target.scrollTop = 0;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window._toastT);
+      window._toastT = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    /* ============ CATEGORIES ============ */
+    const categories = [
+      { name: 'Historia', icon: '📜', color: 'linear-gradient(135deg,#f59e0b,#ef4444)' },
+      { name: 'Ciencia', icon: '🔬', color: 'linear-gradient(135deg,#22d3ee,#3b82f6)' },
+      { name: 'Geografía', icon: '🌍', color: 'linear-gradient(135deg,#10b981,#22d3ee)' },
+      { name: 'Deportes', icon: '⚽', color: 'linear-gradient(135deg,#f59e0b,#84cc16)' },
+      { name: 'Arte', icon: '🎨', color: 'linear-gradient(135deg,#ec4899,#a855f7)' },
+      { name: 'Música', icon: '🎵', color: 'linear-gradient(135deg,#a855f7,#3b82f6)' },
+      { name: 'Tecnología', icon: '💻', color: 'linear-gradient(135deg,#3b82f6,#22d3ee)' },
+      { name: 'Cine', icon: '🎬', color: 'linear-gradient(135deg,#ef4444,#ec4899)' },
+      { name: 'Literatura', icon: '📚', color: 'linear-gradient(135deg,#84cc16,#f59e0b)' },
+      { name: 'Cultura', icon: '🌟', color: 'linear-gradient(135deg,#fbbf24,#ec4899)' },
+      { name: 'Naturaleza', icon: '🌿', color: 'linear-gradient(135deg,#10b981,#84cc16)' },
+      { name: 'Mezclado', icon: '🎲', color: 'linear-gradient(135deg,#8b5cf6,#ec4899)' },
+    ];
+
+    function renderCategories() {
+      const grid = document.getElementById('catGrid');
+      grid.innerHTML = categories.map(c => `
+        <div class="cat-card" style="background:${c.color}" onclick="startGame('${c.name}')">
+          <span class="cat-ic">${c.icon}</span>
+          <span class="cat-name">${c.name}</span>
+        </div>
+      `).join('');
+    }
+
+    /* ============ QUESTION BANK ============ */
+    const questionBank = {
+      'Historia': [
+        { q: '¿En qué año cayó el Muro de Berlín?', o: ['1987', '1989', '1991', '1985'], a: 1 },
+        { q: '¿Quién fue el primer presidente de los Estados Unidos?', o: ['Lincoln', 'Jefferson', 'Washington', 'Adams'], a: 2 },
+        { q: '¿En qué siglo llegó Colón a América?', o: ['XIV', 'XV', 'XVI', 'XVII'], a: 1 },
+        { q: '¿Qué imperio construyó Machu Picchu?', o: ['Azteca', 'Maya', 'Inca', 'Olmeca'], a: 2 },
+        { q: '¿En qué año comenzó la Primera Guerra Mundial?', o: ['1912', '1914', '1916', '1918'], a: 1 },
+        { q: '¿Quién pintó la Capilla Sixtina?', o: ['Da Vinci', 'Rafael', 'Miguel Ángel', 'Caravaggio'], a: 2 },
+      ],
+      'Ciencia': [
+        { q: '¿Cuál es el elemento más abundante en el universo?', o: ['Oxígeno', 'Carbono', 'Hidrógeno', 'Helio'], a: 2 },
+        { q: '¿Cuántos huesos tiene un humano adulto?', o: ['186', '206', '226', '246'], a: 1 },
+        { q: '¿Qué planeta es conocido como el planeta rojo?', o: ['Venus', 'Marte', 'Júpiter', 'Mercurio'], a: 1 },
+        { q: '¿Quién formuló la teoría de la relatividad?', o: ['Newton', 'Einstein', 'Hawking', 'Tesla'], a: 1 },
+        { q: '¿Cuál es la velocidad de la luz aproximada?', o: ['150.000 km/s', '300.000 km/s', '500.000 km/s', '1M km/s'], a: 1 },
+        { q: '¿Cuál es el órgano más grande del cuerpo humano?', o: ['Hígado', 'Pulmón', 'Piel', 'Intestino'], a: 2 },
+      ],
+      'Geografía': [
+        { q: '¿Cuál es la capital de Australia?', o: ['Sídney', 'Melbourne', 'Canberra', 'Perth'], a: 2 },
+        { q: '¿Qué río es el más largo del mundo?', o: ['Amazonas', 'Nilo', 'Yangtsé', 'Misisipi'], a: 1 },
+        { q: '¿En qué continente está Egipto?', o: ['Asia', 'África', 'Europa', 'Oceanía'], a: 1 },
+        { q: '¿Cuál es el país más grande del mundo?', o: ['Canadá', 'China', 'EE.UU.', 'Rusia'], a: 3 },
+        { q: '¿Cuál es la capital de Colombia?', o: ['Medellín', 'Cali', 'Bogotá', 'Cartagena'], a: 2 },
+        { q: '¿Cuál es el desierto más grande del mundo?', o: ['Sahara', 'Antártico', 'Gobi', 'Atacama'], a: 1 },
+      ],
+      'Deportes': [
+        { q: '¿Cada cuántos años se celebra la Copa del Mundo de fútbol?', o: ['2', '3', '4', '5'], a: 2 },
+        { q: '¿Quién ha ganado más Balones de Oro?', o: ['Messi', 'Ronaldo', 'Maradona', 'Pelé'], a: 0 },
+        { q: '¿En qué deporte se usa un "birdie"?', o: ['Tenis', 'Golf', 'Bádminton', 'Críquet'], a: 1 },
+        { q: '¿Cuántos jugadores tiene un equipo de baloncesto en cancha?', o: ['4', '5', '6', '7'], a: 1 },
+        { q: '¿Dónde se originaron los Juegos Olímpicos?', o: ['Roma', 'Grecia', 'Egipto', 'China'], a: 1 },
+        { q: '¿Qué país ha ganado más mundiales de fútbol?', o: ['Alemania', 'Argentina', 'Brasil', 'Italia'], a: 2 },
+      ],
+      'Arte': [
+        { q: '¿Quién pintó "La noche estrellada"?', o: ['Picasso', 'Van Gogh', 'Monet', 'Dalí'], a: 1 },
+        { q: '¿En qué museo se exhibe la Mona Lisa?', o: ['Prado', 'Louvre', 'MoMA', 'Uffizi'], a: 1 },
+        { q: '¿Qué movimiento artístico fundó Picasso con Braque?', o: ['Impresionismo', 'Cubismo', 'Surrealismo', 'Expresionismo'], a: 1 },
+        { q: '¿De qué nacionalidad fue Frida Kahlo?', o: ['Argentina', 'Española', 'Mexicana', 'Cubana'], a: 2 },
+      ],
+      'Música': [
+        { q: '¿Cuántas cuerdas tiene una guitarra estándar?', o: ['4', '5', '6', '7'], a: 2 },
+        { q: '¿De qué país son los Beatles?', o: ['EE.UU.', 'Reino Unido', 'Australia', 'Irlanda'], a: 1 },
+        { q: '¿Quién compuso "La Novena Sinfonía"?', o: ['Mozart', 'Bach', 'Beethoven', 'Chopin'], a: 2 },
+      ],
+      'Tecnología': [
+        { q: '¿Quién fundó Microsoft?', o: ['Steve Jobs', 'Bill Gates', 'Mark Zuckerberg', 'Larry Page'], a: 1 },
+        { q: '¿En qué año se lanzó el primer iPhone?', o: ['2005', '2007', '2009', '2010'], a: 1 },
+        { q: '¿Qué significa HTML?', o: ['Hyper Text Markup Language', 'High Tech Modern Language', 'Hyper Transfer Markup Language', 'Home Tool Markup Language'], a: 0 },
+        { q: '¿Quién creó Linux?', o: ['Bill Gates', 'Linus Torvalds', 'Richard Stallman', 'Steve Wozniak'], a: 1 },
+      ],
+      'Cine': [
+        { q: '¿Quién dirigió "Titanic"?', o: ['Spielberg', 'Cameron', 'Nolan', 'Scorsese'], a: 1 },
+        { q: '¿Qué película ganó el Oscar a mejor película en 2020?', o: ['1917', 'Joker', 'Parásitos', 'Once Upon a Time'], a: 2 },
+        { q: '¿Quién interpreta a Iron Man en el MCU?', o: ['Chris Evans', 'Robert Downey Jr.', 'Chris Hemsworth', 'Tom Holland'], a: 1 },
+      ],
+      'Literatura': [
+        { q: '¿Quién escribió "Cien años de soledad"?', o: ['Cortázar', 'García Márquez', 'Vargas Llosa', 'Borges'], a: 1 },
+        { q: '¿Quién es el autor de "Don Quijote"?', o: ['Lope de Vega', 'Quevedo', 'Cervantes', 'Calderón'], a: 2 },
+        { q: '¿En qué idioma escribió Shakespeare originalmente?', o: ['Inglés', 'Francés', 'Latín', 'Italiano'], a: 0 },
+      ],
+      'Cultura': [
+        { q: '¿Qué animal es el símbolo de China?', o: ['Tigre', 'Dragón', 'Panda', 'Fénix'], a: 1 },
+        { q: '¿Qué fiesta mexicana se celebra el 2 de noviembre?', o: ['Día del Trabajo', 'Día de Muertos', 'Independencia', 'Cinco de Mayo'], a: 1 },
+        { q: '¿Qué moneda usa Japón?', o: ['Yuan', 'Won', 'Yen', 'Rupia'], a: 2 },
+      ],
+      'Naturaleza': [
+        { q: '¿Cuál es el mamífero más grande del mundo?', o: ['Elefante', 'Ballena azul', 'Jirafa', 'Oso polar'], a: 1 },
+        { q: '¿Qué porcentaje de la Tierra es agua?', o: ['51%', '61%', '71%', '81%'], a: 2 },
+        { q: '¿Cuál es el ave más rápida del mundo?', o: ['Águila real', 'Halcón peregrino', 'Cóndor', 'Avestruz'], a: 1 },
+      ],
+      'Mezclado': []
+    };
+    // fill 'Mezclado'
+    questionBank['Mezclado'] = Object.entries(questionBank)
+      .filter(([k]) => k !== 'Mezclado')
+      .flatMap(([, v]) => v);
+
+    /* ============ GAME ============ */
+    let game = null;
+
+    function startGame(category) {
+      category = category || 'Mezclado';
+      const pool = questionBank[category] || questionBank['Mezclado'];
+      const shuffled = [...pool].sort(() => Math.random() - 0.5).slice(0, 7);
+      game = {
+        category,
+        questions: shuffled,
+        index: 0,
+        myScore: 0,
+        oppScore: 0,
+        history: [],
+        timer: null,
+        timeLeft: 15,
+        lifelines: { fifty: true, time: true, skip: true, public: true }
+      };
+      // reset lifelines visually
+      ['lifeFifty','lifeTime','lifeSkip','lifePublic'].forEach(id => document.getElementById(id).classList.remove('used'));
+      document.getElementById('catTag').textContent = categories.find(c => c.name === category)?.icon + ' ' + category;
+      renderProgressDots();
+      goTo('game');
+      showQuestion();
+    }
+
+    function renderProgressDots() {
+      const wrap = document.getElementById('progressDots');
+      wrap.innerHTML = '';
+      for (let i = 0; i < game.questions.length; i++) {
+        const d = document.createElement('div');
+        d.className = 'progress-dot';
+        if (i < game.index) d.classList.add(game.history[i] ? 'done' : 'wrong');
+        else if (i === game.index) d.classList.add('current');
+        wrap.appendChild(d);
+      }
+    }
+
+    function showQuestion() {
+      if (game.index >= game.questions.length) return endGame();
+      const q = game.questions[game.index];
+      document.getElementById('questionText').textContent = q.q;
+      const box = document.getElementById('answersBox');
+      const letters = ['A','B','C','D'];
+      box.innerHTML = '';
+      q.o.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'answer-btn';
+        btn.innerHTML = `<span class="answer-letter">${letters[idx]}</span><span>${opt}</span>`;
+        btn.onclick = () => answer(idx);
+        box.appendChild(btn);
+      });
+      renderProgressDots();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(game.timer);
+      game.timeLeft = 15;
+      const max = 15;
+      const fg = document.getElementById('timerFg');
+      const num = document.getElementById('timerNum');
+      const total = 150.8;
+      fg.style.stroke = 'var(--primary-3)';
+      const update = () => {
+        num.textContent = game.timeLeft;
+        fg.style.strokeDashoffset = total * (1 - game.timeLeft / max);
+        if (game.timeLeft <= 5) fg.style.stroke = 'var(--red)';
+        else if (game.timeLeft <= 8) fg.style.stroke = 'var(--accent)';
+      };
+      update();
+      game.timer = setInterval(() => {
+        game.timeLeft--;
+        update();
+        if (game.timeLeft <= 0) {
+          clearInterval(game.timer);
+          answer(-1); // timeout
+        }
+      }, 1000);
+    }
+
+    function answer(idx) {
+      clearInterval(game.timer);
+      const q = game.questions[game.index];
+      const buttons = document.querySelectorAll('.answer-btn');
+      buttons.forEach((b, i) => {
+        b.disabled = true;
+        if (i === q.a) b.classList.add('correct');
+        if (i === idx && i !== q.a) b.classList.add('wrong');
+      });
+      const correct = idx === q.a;
+      game.history.push(correct);
+      if (correct) {
+        game.myScore++;
+        document.getElementById('myScore').textContent = game.myScore;
+      }
+      // Simulate opponent — 60% chance to get it right, with slight randomness
+      if (Math.random() < 0.6) {
+        game.oppScore++;
+        document.getElementById('oppScore').textContent = game.oppScore;
+      }
+      setTimeout(() => {
+        game.index++;
+        showQuestion();
+      }, 1500);
+    }
+
+    function endGame() {
+      const won = game.myScore > game.oppScore;
+      const tie = game.myScore === game.oppScore;
+      document.getElementById('resultEmoji').textContent = won ? '🏆' : tie ? '🤝' : '💪';
+      document.getElementById('resultTitle').textContent = won ? '¡Victoria!' : tie ? 'Empate' : 'Casi lo logras';
+      document.getElementById('resultSub').textContent = `${won ? 'Has ganado' : tie ? 'Empataste' : 'Perdiste'} ${game.myScore}-${game.oppScore} contra Andrea`;
+      goTo('result');
+    }
+
+    /* ============ LIFELINES ============ */
+    function useFifty() {
+      if (!game || !game.lifelines.fifty) return;
+      game.lifelines.fifty = false;
+      document.getElementById('lifeFifty').classList.add('used');
+      const q = game.questions[game.index];
+      const wrongs = [0,1,2,3].filter(i => i !== q.a);
+      wrongs.sort(() => Math.random() - 0.5);
+      const toHide = wrongs.slice(0, 2);
+      document.querySelectorAll('.answer-btn').forEach((b, i) => {
+        if (toHide.includes(i)) { b.style.opacity = 0.25; b.disabled = true; }
+      });
+    }
+    function useTime() {
+      if (!game || !game.lifelines.time) return;
+      game.lifelines.time = false;
+      document.getElementById('lifeTime').classList.add('used');
+      game.timeLeft += 10;
+    }
+    function useSkip() {
+      if (!game || !game.lifelines.skip) return;
+      game.lifelines.skip = false;
+      document.getElementById('lifeSkip').classList.add('used');
+      clearInterval(game.timer);
+      game.history.push(false);
+      game.index++;
+      showQuestion();
+    }
+    function usePublic() {
+      if (!game || !game.lifelines.public) return;
+      game.lifelines.public = false;
+      document.getElementById('lifePublic').classList.add('used');
+      const q = game.questions[game.index];
+      showToast(`📊 El 72% del público elige: ${['A','B','C','D'][q.a]}`);
+    }
+
+    /* ============ LEADERBOARD ============ */
+    const leaderboard = [
+      { name: 'CarlosM', score: 12450, lvl: 87, av: 'C' },
+      { name: 'LauraQ', score: 11820, lvl: 79, av: 'L' },
+      { name: 'JaviR', score: 10940, lvl: 74, av: 'J' },
+      { name: 'AndreaP', score: 9870, lvl: 68, av: 'A' },
+      { name: 'PabloS', score: 8920, lvl: 62, av: 'P' },
+      { name: 'MartaG', score: 7840, lvl: 58, av: 'M' },
+      { name: 'Duvan', score: 5240, lvl: 24, av: 'D', me: true },
+      { name: 'LuisH', score: 4920, lvl: 22, av: 'L' },
+      { name: 'NataliaR', score: 4310, lvl: 19, av: 'N' },
+    ];
+    function renderLeaderboard() {
+      const list = document.getElementById('leaderboardList');
+      list.innerHTML = leaderboard.map((p, i) => {
+        const rankCls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        return `
+          <div class="lb-item ${p.me ? 'me' : ''}">
+            <div class="lb-rank ${rankCls}">${i + 1}</div>
+            <div class="lb-av">${p.av}</div>
+            <div class="lb-info">
+              <div class="lb-name">${p.name}${p.me ? ' (Tú)' : ''}</div>
+              <div class="lb-meta">Nivel ${p.lvl}</div>
+            </div>
+            <div class="lb-score">${p.score.toLocaleString()}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* ============ FRIENDS ============ */
+    const friends = [
+      { name: 'Laura M.', meta: 'En línea · Nivel 38', av: 'L', online: true },
+      { name: 'Javier R.', meta: 'Jugando ahora · Diamante', av: 'J', online: true },
+      { name: 'Andrea P.', meta: 'Hace 5 min · Nivel 42', av: 'A', online: false },
+      { name: 'Carlos M.', meta: 'En línea · Maestro', av: 'C', online: true },
+      { name: 'Pablo S.', meta: 'Hace 2 h · Nivel 31', av: 'P', online: false },
+    ];
+    function renderFriends() {
+      const list = document.getElementById('friendsList');
+      list.innerHTML = friends.map(f => `
+        <div class="activity-card">
+          <div class="av" style="position:relative">${f.av}${f.online ? '<span style="position:absolute;bottom:-2px;right:-2px;width:10px;height:10px;background:var(--green);border-radius:50%;border:2px solid var(--bg-1)"></span>' : ''}</div>
+          <div class="txt">
+            <div class="name">${f.name}</div>
+            <div class="meta">${f.meta}</div>
+          </div>
+          <button class="act-btn" onclick="startGame()">Retar</button>
+        </div>
+      `).join('');
+    }
+
+    /* ============ ROOMS ============ */
+    const rooms = [
+      { name: 'Cinéfilos de Verdad', host: 'Andrea', players: '8/12', cat: 'Cine', av: 'A' },
+      { name: 'Geo Maestros 🌍', host: 'Carlos', players: '5/8', cat: 'Geografía', av: 'C' },
+      { name: 'Ciencia Loca', host: 'Pablo', players: '3/6', cat: 'Ciencia', av: 'P' },
+      { name: 'Rock & Pop Trivia', host: 'Marta', players: '9/12', cat: 'Música', av: 'M' },
+      { name: 'Historia para Pros', host: 'Luis', players: '6/10', cat: 'Historia', av: 'L' },
+    ];
+    function renderRooms() {
+      const list = document.getElementById('roomsList');
+      list.innerHTML = rooms.map(r => `
+        <div class="room-item">
+          <div class="room-host">${r.av}</div>
+          <div class="room-info">
+            <div class="room-name">${r.name}</div>
+            <div class="room-meta"><span>👥 ${r.players}</span><span>· ${r.cat}</span></div>
+          </div>
+          <button class="room-join" onclick="goTo('matchmaking')">Unirse</button>
+        </div>
+      `).join('');
+    }
+
+    /* ============ INIT ============ */
+    renderCategories();
+    renderLeaderboard();
+    renderFriends();
+    renderRooms();
+  </script>
+</body>
+</html>
